@@ -28,7 +28,7 @@ struct ContentView: View {
             }
         }
         .animation(.easeInOut(duration: 0.25), value: showSplash)
-        .statusBar(hidden: !showSplash)
+        .statusBar(hidden: true)
         .onAppear {
             startFlow()
         }
@@ -63,45 +63,9 @@ private struct SplashView: View {
             TShieldSVGView()
                 .frame(width: 128, height: 128)
                 .frame(width: 192, height: 192)
-
-            VStack(spacing: 0) {
-                SplashStatusBar()
-                    .padding(.top, 8)
-                    .padding(.horizontal, 22)
-
-                Spacer()
-
-                Capsule()
-                    .fill(Color.black)
-                    .frame(width: 133, height: 5)
-                    .padding(.bottom, 8)
-            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea()
-    }
-}
-
-private struct SplashStatusBar: View {
-    var body: some View {
-        HStack {
-            Text("9:41")
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(.black)
-
-            Spacer()
-
-            HStack(spacing: 5) {
-                Image(systemName: "cellularbars")
-                    .font(.system(size: 11, weight: .semibold))
-                Image(systemName: "wifi")
-                    .font(.system(size: 11, weight: .semibold))
-                Image(systemName: "battery.100")
-                    .font(.system(size: 17, weight: .regular))
-            }
-            .foregroundStyle(.black)
-        }
-        .frame(height: 44)
     }
 }
 
