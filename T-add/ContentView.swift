@@ -158,6 +158,8 @@ private struct NextScreenView: View {
     @State private var showBottomSheet = false
     @State private var showConsultantPopup = false
     @State private var showPromoFullScreen = false
+    @State private var shouldShowErrorOnTap = false
+    @State private var showErrorAlert = false
     @State private var sheetWorkItem: DispatchWorkItem?
     @State private var popupWorkItem: DispatchWorkItem?
     @State private var promoWorkItem: DispatchWorkItem?
@@ -187,6 +189,12 @@ private struct NextScreenView: View {
                 resetTransientState()
                 scheduleSheetPresentation()
             }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                if shouldShowErrorOnTap {
+                    showErrorAlert = true
+                }
+            }
         }
         .ignoresSafeArea()
         .sheet(isPresented: $showBottomSheet, onDismiss: {
@@ -200,7 +208,13 @@ private struct NextScreenView: View {
         .fullScreenCover(isPresented: $showPromoFullScreen) {
             PromoFullScreenView {
                 showPromoFullScreen = false
+                shouldShowErrorOnTap = true
             }
+        }
+        .alert("Что-то пошло не так", isPresented: $showErrorAlert) {
+            Button("Понятно", role: .cancel) {}
+        } message: {
+            Text("Попробуйте позже")
         }
     }
 
@@ -211,6 +225,8 @@ private struct NextScreenView: View {
         showBottomSheet = false
         showConsultantPopup = false
         showPromoFullScreen = false
+        shouldShowErrorOnTap = false
+        showErrorAlert = false
     }
 
     private func scheduleSheetPresentation() {
